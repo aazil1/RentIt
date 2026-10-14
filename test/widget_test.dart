@@ -1,30 +1,46 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:myapp/main.dart';
+import 'package:myapp/services/marketplace_store.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  setUp(() => SharedPreferences.setMockInitialValues({}));
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  testWidgets('RentApp smoke test', (WidgetTester tester) async {
+    final store = MarketplaceStore();
+    await store.load();
+    await tester.pumpWidget(RentApp(store: store));
+    await tester.pumpAndSettle();
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    expect(find.text('Popular near you'), findsOneWidget);
+    expect(find.text('Sony Alpha a7 III Camera Kit'), findsOneWidget);
+  });
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  testWidgets('navigation destinations open their matching pages',
+      (WidgetTester tester) async {
+    await tester.binding.setSurfaceSize(const Size(430, 900));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    final store = MarketplaceStore();
+    await store.load();
+    await tester.pumpWidget(RentApp(store: store));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Inbox'));
+    await tester.pumpAndSettle();
+    expect(find.text('Messages'), findsOneWidget);
+
+    await tester.tap(find.text('List item'));
+    await tester.pumpAndSettle();
+    expect(find.text('List an item'), findsOneWidget);
+
+    await tester.tap(find.text('Activity'));
+    await tester.pumpAndSettle();
+    expect(find.text('Your activity'), findsOneWidget);
+
+    await tester.tap(find.text('Profile'));
+    await tester.pumpAndSettle();
+    expect(find.text('Your profile'), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 }
