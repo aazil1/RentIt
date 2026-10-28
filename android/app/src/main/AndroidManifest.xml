@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<<<<<<< HEAD
     
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -8,6 +9,12 @@
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
 
+=======
+    <application
+        android:label="myapp"
+        android:name="${applicationName}"
+        android:icon="@mipmap/ic_launcher">
+>>>>>>> 015544253f2899b568c51e788fd7c036209997ce
         <activity
             android:name=".MainActivity"
             android:exported="true"

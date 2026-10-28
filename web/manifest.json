@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
     "name": "student_shop",
     "short_name": "student_shop",
+=======
+    "name": "myapp",
+    "short_name": "myapp",
+>>>>>>> 015544253f2899b568c51e788fd7c036209997ce
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
